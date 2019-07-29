@@ -1,0 +1,626 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<style> 
+.components-page-header-wrapper-index-content { margin: 6vh auto 0;  max-width: 768px; border-radius: 8px; border: 1px solid #eaeced; padding: 24px 24px 0px; }
+a { -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
+
+a:-webkit-any-link { color: #000; cursor: pointer; text-decoration: none; }
+
+.header-bar { text-align: right; margin: -10px 10px 0px; }
+
+.language-switcher { display: inline; }
+
+.language-switcher a:link, .language-switcher a:visited, #resendOtp:visited { color: inherit; text-decoration: inherit; }
+
+.language-switcher a:hover { opacity: .85; text-decoration: underline; }
+
+input { border-radius : 3px; padding :10px; width: 97%; font-size: 14px; font-family: Raleway; border: 1px solid #aaaaaa;}
+
+button { border-radius : 3px; background-color: #fff45f; color: #000000; border: none; padding: 10px 20px; font-size: 14px; font-family: Raleway; cursor: pointer; font-weight: bold;
+
+}
+
+button:hover { opacity: 0.8; }
+
+.tab { display: none; }
+
+.refOTP { opacity: 0.7; font-weight: bold; }
+
+.opacityText{ opacity: 0.85; font-weight: bold; }
+
+.position-input {
+position: relative;
+}
+
+.modal { display: none; 
+position: fixed; 
+z-index: 1; 
+padding-top: 15%; 
+left: 0; 
+top: 0; 
+width: 100%;
+height: 100%;
+ overflow: auto; }
+
+.modal-content { background-color: #fefefe; margin: auto; padding: 1%; border: 2px solid #bbbbbb; width: 80%; border-radius: 1%; }
+
+.multi-steps > li.is-active:before, .multi-steps > li.is-active ~ li:before {
+	content: counter(stepNum);
+	font-family: inherit;
+	font-weight: 700;
+  }
+  .multi-steps > li.is-active:after, .multi-steps > li.is-active ~ li:after {
+	background-color: #ededed;
+  }
+  
+  .multi-steps {
+	display: table;
+	table-layout: fixed;
+	width: 100%;
+  }
+  .multi-steps > li {
+	counter-increment: stepNum;
+	text-align: center;
+	display: table-cell;
+	position: relative;
+	color: #000000a4;
+  }
+  .multi-steps > li:before {
+	content: '\f00c';
+	content: '\2713;';
+	content: '\10003';
+	content: '\10004';
+	content: '\2713';
+	display: block;
+	margin: 0 auto 4px;
+	background-color: #fff;
+	width: 36px;
+	height: 36px;
+	line-height: 32px;
+	text-align: center;
+	font-weight: bold;
+	border-width: 2px;
+	border-style: solid;
+	border-color: #fff45f;
+	color: #000000a4;
+	border-radius: 50%;
+  }
+  .multi-steps > li:after {
+	content: '';
+	height: 3px;
+	width: 100%;
+	background-color: #fff45f;
+	position: absolute;
+	top: 16px;
+	left: 50%;
+	z-index: -1;
+  }
+  .multi-steps > li:last-child:after {
+	display: none;
+	
+  }
+  .multi-steps > li.is-active:before {
+	background-color: #fff;
+	border-color:#fff45f;
+	
+  }
+  .multi-steps > li.is-active ~ li {
+	color: #000000a4;
+  }
+  .multi-steps > li.is-active ~ li:before {
+	background-color: #ededed;
+	border-color: #ededed;
+  }
+  .error {
+   background-color:  rgb(189, 54, 54);
+   
+  }
+</style>
+<div class="components-page-header-wrapper-index-content">
+	<div style="text-align: right;" class="opacityText">
+		<a id="th" href="#" onclick="changelanguage('th')">ไทย</a> | <a id="en" href="#" onclick="changelanguage('en')">English</a>
+	</div>
+	<div style="text-align: center;">
+		<img src="image/kcc_new.png" width="30%" height="30%"><img
+			src="image/firstchoice_logo.png" width="30%" height="30%">
+	</div>
+
+	<div class="container opacityText">
+		<div class="multi-steps">
+				  <li class="is-active" id="step1">Start</li>
+				  <li id="step2">First Step</li>
+				  <li id="step3">Middle Stage</li>
+				</div>
+	</div>
+	<div class="tab">
+		<div style="text-align: center;">
+			<textarea id="Textarea" rows="30%" cols="80%"
+				style="overflow: auto; resize: none; border-radius: 5px;" readonly></textarea>
+		</div>
+		<div style="font-size: 14px; text-align: center;" id="tacBottomText" >The user has read and understood
+			all the above terms and conditions completely and agreed to be bound
+			hereunder in all respects.</div>
+		<br>
+		<div style="overflow: auto;">
+			<div style="float: right; padding-bottom: 10px">
+				<button type="button" id="cancel"style="background-color: #bbbbbb; color: 000000;">Cancel</button>
+				<button type="button" id="agree" onclick="onclickAgree()">I Agree</button>
+
+			</div>
+		</div>
+	</div>
+
+	<div class="tab">
+		<div class="opacityText">
+			<span id="citizenId">Citizen ID/Passport No</span>
+			<div class= "position-input">
+			 	<a href=# > <i style="position:absolute;right: 3%;bottom: 35%;" class="fa fa-eye "></i></a>
+			  <input  name="citizen" id="citizen" oninput="RequestOTP()" maxlength="19" >
+			
+			</div>
+			
+		</div>
+		<br>
+		<div class="opacityText">
+			<span id="mobileId">Mobile Phone</span>
+			<div class= "position-input">
+			<a href=#> <i style="position:absolute;right: 3%;bottom: 35%;" class="fa fa-eye "></i></a>
+			<input name="mobile" id="mobile" oninput="RequestOTP()"maxlength="10">
+			</div>
+		</div>
+		<br>
+		<div style="overflow: auto;">
+			<div style="float: right; padding-bottom: 10px">
+				<button type="button" id="requestOTP"
+					style="background-color: #bbbbbb; color: #ffffff;"
+					onclick="onclickRequestOTP()" disabled>Request OTP</button>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="tab">
+		<p style="text-align: center;" class="refOTP">
+			<span id="refNum">Reference Number :</span><span id="refOTP"></span>
+		</p>
+		<p>
+		<div class="opacityText">
+			<span id="onetimepassword">One Time Password(OTP)</span><span
+				style="float: right;">Timeout: <span
+				id="timeCountdown"></span></span>
+
+		</div>
+		<input name="OTP" id="OTP" maxlength="6" oninput="VerifyOTP()">
+		</p>
+
+		<div class="opacityText"  style="overflow: auto;">
+			<div style="float: left; padding-top: 10px">
+				<a href="" id="resendOTP" onclick='return boat()'><b>Resend OTP</b></a>
+			</div>
+			<div style="float: right; padding-bottom: 10px">
+				<button type="button" id="verifyOTP"
+					style="background-color: #bbbbbb; color: #ffffff;"
+					onclick="onclickVerifyOTP()" disabled>Verify OTP</button>
+			</div>
+		</div>
+	</div>
+	<div id="EmailModal" class="modal">
+
+		<div class="modal-content">
+				<p style="text-align: center;" id="fillEmail">Please Fill-in email address</p>
+				<div>
+					<span id="EmailTxt">E-mail address:</span><input style= "width: 50% !important;" id="emailInput">
+				</div>
+				<br>
+				<div style="overflow: auto; margin-right: 2">
+			<div style="float: right; padding-bottom: 10px">
+				<button type="button" id="popEmailCancel"
+					style="background-color: #bbbbbb; color: 000000;"onclick="onClickEmail('popEmailCancel')">Cancel</button>
+				<button type="button" id="popEmailOK" onclick="onClickEmail('popEmailOK')">Accept</button>
+
+			</div>
+		</div>
+		</div>
+
+
+	</div>
+	<div id="ChangeModal" class="modal">
+
+		<div class="modal-content">
+				<p style="text-align: center;" id="chgTxt" >Wait ....</p>
+				<br>
+				<div style="overflow: auto; margin-right: 2">
+			<div style="float: right; padding-bottom: 10px">
+				<button type="button" id="popChgCancel" 
+					style="background-color: #bbbbbb; color: 000000;" onclick="onClickChg('popChgCancel')">Accept</button>
+				<button type="button" id="popChgOK" onclick="onClickChg('popChgOK')" >OK</button>
+
+			</div>
+		</div>
+		</div>
+
+
+	</div>
+</div>
+
+<script>	
+var currentTap = 0;
+var RefNum = "1234";
+var emailFrompop = "";
+var chgForpop = "";
+var setTimeout = false;
+var tempCitizen = "";
+
+var language = {
+	    "th": {
+	        "400": "ไคลเอ็นต์ออกคำขอไม่ถูกต้อง",
+	        "500": "ขออภัยในความไม่สะดวก ระบบไม่สามารถทำรายการได้ในขณะนี้ ขออภัยในความไม่สะดวก",
+	        "999": "ขออภัยในความไม่สะดวก ระบบไม่สามารถทำรายการได้ ขออภัยในความไม่สะดวก",
+	        "10801": "บัตรของท่านไม่สามารถทำรายการได้ กรุณาติดต่อศูนย์บริการบัตรเครดิต",
+	        "10805": "หมายเลขบัตรหรือหมายเลขโทรศัพท์มือถือ ไม่ถูกต้อง กรุณาทำรายการใหม่อีกครั้งหรือติดต่อศูนย์บริการบัตรเครดิต",
+	        "10807": "รหัส OTP ไม่ถูกต้อง กรุณากรอกรหัส OTP ใหม่",
+	        "requestOTP": "ขอรหัส OTP",
+	        "citizenId": "หมายเลขบัตรเครดิต",
+	        "mobileId": "โทรศัพท์มือถือ",
+	        "cardInvalidText": "กรุณากรอกหมายเลขบัตร 16 หลัก",
+	        "phoneInvalidText": "กรุณากรอกหมายเลขโทรศัพท์มือถือ 10 หลัก",
+	        "internalServerErrorTitleText": "",
+	        "internalServerErrorMessageText": "ขออภัยในความไม่สะดวก ระบบไม่สามารถทำรายการได้ในขณะนี้ กรุณาทำรายการใหม่ภายหลัง",
+	        "requestOtpText": "ขอรหัส OTP",
+	        "requestOtpLoadingText": "กำลังขอรหัส OTP...",
+	        "verifyOTP": "ยืนยันรหัส OTP",
+	        "verifyingOtpText": "กำลังยืนยันรหัส OTP...",
+	        "refNum": "รหัสอ้างอิง : ",
+	        "onetimepassword": "รหัส OTP",
+	        "verifyCodeRequireText": "กรุณากรอกรหัส OTP ที่ได้รับ",
+	        "verifyCodeInvalidText": "กรุณาใส่เลขรหัส 6 ตัว",
+	        "verifyCodeTimeoutText": "รหัส OTP หมดอายุ กรุณากดปุ่ม ขอรหัส OTP อีกครั้ง",
+	        "resendOTP": "ขอรหัส OTP อีกครั้ง",
+	        "successText": "สำเร็จ",
+	        "resendingOtpText": "กำลังขอรหัส OTP อีกครั้ง...",
+	        "resendOtpSuccessText": "ขอรหัส OTP สำเร็จ",
+	        "tacText": "ข้อตกลงและเงื่อนไขการใช้งาน",
+	        "tacBottomText": "ผู้ใช้บริการได้อ่านและเข้าใจข้อกำหนดและเงื่อนไขที่กล่าวข้างต้นโดยละเอียดแล้ว ตกลงรับข้อผูกพันตามนี้ทุกประการ",
+	        "agree": "ยอมรับ",
+	        "cancel": "ยกเลิก",
+	        "englishText": "อังกฤษ",
+	        "thaiText": "ไทย",
+	        "cardTooltip": "กรุณากรอกหมายเลขบัตรหลัก 16 หลักเท่านั้น",
+	        "phoneTooltip": "กรุณากรอกหมายเลขโทรศัพท์มือถือ 10 หลักที่ลงทะเบียนไว้กับบัตรเครดิต",
+	        "consentText": "ยินยอม",
+	        "allowConsentText": "อนุญาต",
+	        "errorTitleText": "",
+	        "connectionErrorTitle": "",
+	        "connectionErrorText": "การเชื่อมต่ออินเทอร์เน็ตขัดข้อง กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ตของท่าน",
+	        "connectionTimeoutErrorTitle": "",
+	        "connectionTimeoutError": "การเชื่อมต่อหมดเวลา กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ตของท่าน",
+	        "unknownErrorTitle": "",
+	        "unknownErrorText": "ขออภัยในความไม่สะดวก ระบบไม่สามารถทำรายการได้ในขณะนี้ กรุณาทำรายการใหม่ภายหลัง",
+	        "notFoundTitle": "",
+	        "notFoundText": "ลิงค์ไม่ถูกต้อง",
+	        "unauthorized_client": "ท่านใช้เวลาทำรายการนานเกินกว่าที่กำหนด กรุณาทำรายการใหม่อีกครั้ง",
+	        "otpLimitAlert": "ท่านทำรายการเกินจำนวนครั้งที่กำหนด",
+	        "popEmailCancel" : "ยกเลิก",
+	    	"popEmailOK" : "ตกลง",
+	    	"popChgCancel" : "ยกเลิก",
+	    	"popChgOK" : "ตกลง",
+	    	"fillEmail":"กรุณาระบุ อีเมล์",
+	    	"EmailTxt":"อีเมล์ :"
+	    },
+	    "en": {
+	        "400": "Invalid request.",
+	        "500": "Sorry, something went wrong. Please try again later.",
+	        "999": "Sorry, something went wrong. Please try again later.",
+	        "10801": "Your card is not eligible. Please contact credit card call center.",
+	        "10805": "Your card number or mobile number is incorrect. Please contact credit card call center.",
+	        "10807": "OTP is incorrect. Please enter the OTP again.",
+	        "requestOTP": "Request OTP",
+	        "citizenId": "Citizen ID/Passport No",
+	        "mobileId": "Mobile Phone",
+	        "cardInvalidText": "Please enter the 16-digit credit card number.",
+	        "phoneInvalidText": "Please enter the 10-digit mobile number.",
+	        "internalServerErrorTitleText": "",
+	        "internalServerErrorMessageText": "Sorry, something went wrong. Please try again later.",
+	        "requestOtpText": "Request OTP",
+	        "requestOtpLoadingText": "Requesting OTP..",
+	        "verifyOTP": "Verify OTP",
+	        "verifyingOtpText": "Verifying OTP...",
+	        "refNum": "Reference Number : ",
+	        "onetimepassword": "One Time Password (OTP)",
+	        "verifyCodeRequireText": "Please enter the OTP.",
+	        "verifyCodeInvalidText": "Please key in the 6 digits OTP",
+	        "verifyCodeTimeoutText": "OTP is expired. Please click Resend OTP.",
+	        "resendOTP": "Resend OTP",
+	        "successText": "Success",
+	        "resendingOtpText": "Resending OTP...",
+	        "resendOtpSuccessText": "OTP Sent",
+	        "tacText": "Terms and Conditions",
+	        "tacBottomText": "The user has read and understood all the above terms and conditions completely and agreed to be bound hereunder in all respects.",
+	        "agree": "I Agree",
+	        "cancel": "Cancel",
+	        "englishText": "English",
+	        "thaiText": "Thai",
+	        "cardTooltip": "Please enter the 16-digit primary card only.",
+	        "phoneTooltip": "Please enter the 10-digit mobile number registered with the credit card.",
+	        "consentText": "Consent",
+	        "allowConsentText": "Allow",
+	        "errorTitleText": "",
+	        "connectionErrorTitle": "",
+	        "connectionErrorText": "Connection Error. Please check your internet connection and try again.",
+	        "connectionTimeoutErrorTitle": "",
+	        "connectionTimeoutError": "Connection Timeout. Please check your internet connection and try again.",
+	        "unknownErrorTitle": "",
+	        "unknownErrorText": "Sorry, something went wrong. Please try again later.",
+	        "notFoundTitle": "",
+	        "notFoundText": "Service not found",
+	        "unauthorized_client": "Your transaction is taking too long. Please try again.",
+	        "otpLimitAlert": "You have exceeded the transaction limit.",
+	        "popEmailCancel" : "Cancel",
+	    	"popEmailOK" : "Accept",
+	    	"popChgCancel" : "Cancel",
+	    	"popChgOK" : "Accept",
+	    	"fillEmail":"Please Fill-in email address",
+	    	"EmailTxt":"E-mail address:"
+	    		
+	    }
+	}
+
+showTab(currentTap);
+
+var step1 = document.getElementById('step1');
+var step2 = document.getElementById('step2');
+var step3 = document.getElementById('step3');
+var step = "step1"
+function showTab(n) {
+  var x = document.getElementsByClassName("tab");
+  x[n].style.display = "block";
+  currentTap++;
+}
+
+var mobiletemp = ""
+function RequestOTP() {
+	
+	var citizen = document.getElementById("citizen");
+ 	var mobile = document.getElementById("mobile");
+	var requestOTP = document.getElementById("requestOTP");
+	
+		var mobilelength = document.getElementById("mobile").value.length
+
+			if(mobilelength == 1)
+				{
+				mobiletemp ="X"
+				}
+			else{
+				mobiletemp += "X"
+			}
+		mobile.value = mobiletemp
+		
+	
+	
+	//citizen.classList.remove("error");
+	//mobile.classList.remove("error");
+	
+			if(citizen.value.length >= 13 && citizen.value.length <= 19 && mobile.value.length == 10)
+				{
+				
+					
+				
+				requestOTP.disabled = false;
+				requestOTP.removeAttribute("style"); 
+				}
+			else{
+					requestOTP.disabled = true;
+					requestOTP.setAttribute("style","background-color: #bbbbbb ; color: #ffffff;"); 
+				}
+	}
+
+function VerifyOTP(){
+	var otp = document.getElementById("OTP").value;
+	var verify = document.getElementById("verifyOTP");
+
+	if(otp.length >= 6 && setTimeout == false){
+		verify.disabled = false;
+		verify.removeAttribute("style"); 
+		}
+	else{
+			//error
+		verify.disabled = true;
+		verify.setAttribute("style","background-color: #bbbbbb ; color: #ffffff;"); 
+		}
+		
+	
+	}
+async function onclickRequestOTP() {
+	var citizen = document.getElementById("citizen");
+ 	var mobile = document.getElementById("mobile");
+	var verify = document.getElementById("verifyOTP");
+	var x = document.getElementsByClassName("tab");
+	
+		var controllerMobile = await connectMobile(mobile.value);
+		var controllerCitizen = await connectCitizen(citizen.value);
+			
+			if(controllerCitizen == true && controllerMobile == true)
+				{
+				var param = {
+						"requestOTP" : "test"
+				}
+				console.log(param)
+				$.ajax({
+			        type: "POST",
+			        url: "/requestOTP",
+			        data: param,
+			        success: function (result) {
+			        		console.log(result)
+			        		// Close Tap
+							x[currentTap].style.display = "block";
+							x[currentTap - 1].style.display = "none";
+							
+							// Change Step
+							step = 'step3';
+						    step2.classList.remove("is-active");
+						    step3.classList.add("is-active");
+						    
+							currentTap++;
+							document.getElementById("refOTP").innerHTML = RefNum;
+
+							var countDownDate = new Date().getTime()
+									+ (12 * 60 * 1000);
+							setInterval(
+									function() {
+										var now = new Date().getTime();
+										var distance = countDownDate - now;
+										var minutes = Math.floor((distance % (1000 * 60 * 60))/ (1000 * 60));
+										var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+										document.getElementById("timeCountdown").innerHTML = minutes+ "m " + seconds + "s ";
+										if (distance <= 0) {
+											document.getElementById("timeCountdown").innerHTML = "Expired";
+											verify.disabled = true;
+											verify.setAttribute("style","background-color: #bbbbbb ; color: #ffffff;");
+											setTimeout = true
+										}
+									}, 1000);
+
+						},
+						error : function(result) {
+							console.log(result)
+						}
+					});
+
+		}else{
+			if(controllerCitizen == false && controllerMobile == true){
+				 citizen.classList.add("error");
+			}else if(controllerMobile == false && controllerCitizen == true){
+				mobile.classList.add("error");
+			}else{
+				 citizen.classList.add("error");
+				 mobile.classList.add("error");
+			}
+			
+		}
+
+	}
+
+	function onclickVerifyOTP() {
+		console.log(document.getElementById("OTP").value)
+
+		var modalEmail = document.getElementById("EmailModal");
+		var modalChg = document.getElementById("ChangeModal");
+		if (emailFrompop == '') {
+			modalEmail.style.display = "block"
+		}
+		if (chgForpop == "" && emailFrompop) {
+			modalChg.style.display = "block"
+		}
+
+	}
+	function onclickAgree() {
+		// Change Step
+		step = 'step2';
+	    step1.classList.remove("is-active");
+	    step2.classList.add("is-active");
+	    // Close tap
+		var x = document.getElementsByClassName("tab");
+		x[currentTap].style.display = "block";
+		x[currentTap - 1].style.display = "none";
+		currentTap++;
+	}
+
+	function onClickEmail(element) {
+
+		var modalEmail = document.getElementById("EmailModal");
+		var modalChg = document.getElementById("ChangeModal");
+		console.log(element)
+		if (element == 'popEmailOK') {
+			emailFrompop = document.getElementById("emailInput").value;
+		} else {
+			document.getElementById("emailInput").value = "";
+		}
+		console.log(emailFrompop)
+		modalEmail.style.display = "none"
+
+		if (chgForpop == "") {
+			modalChg.style.display = "block"
+		}
+	}
+
+	function onClickChg(element) {
+
+		var modalChg = document.getElementById("ChangeModal");
+		modalChg.style.display = "none"
+	}
+	
+	function connectMobile(mobile){
+		var param = {
+			"mobile" : mobile
+		}
+		 return new Promise(resolve => {
+			 $.ajax({
+			        type: "POST",
+			        url: "/mobile",
+			        data: param,
+			        success: function (result) {
+			        	resolve(result);
+			        },
+			        error: function (result) {
+			        	resolve(false)
+			        }
+			   	 	});
+		 })
+		
+	}
+	
+	function connectCitizen(citizen){
+		var param = {
+				"citizen" : citizen
+			}
+			 return new Promise(resolve => {
+				 $.ajax({
+				        type: "POST",
+				        url: "/citizen",
+				        data: param,
+				        success: function (result) {
+				        	resolve(result);
+				        },
+				        error: function (result) {
+				        	resolve(false)
+				        }
+				   	 	});
+			 })
+	}
+	
+	function changelanguage(switchlanguage){
+				
+		document.getElementById("agree").innerHTML = language[switchlanguage]['agree']
+		document.getElementById("cancel").innerHTML = language[switchlanguage]['cancel']
+		document.getElementById("citizenId").innerHTML = language[switchlanguage]['citizenId']
+		document.getElementById("mobileId").innerHTML = language[switchlanguage]['mobileId']
+		document.getElementById("requestOTP").innerHTML = language[switchlanguage]['requestOTP']
+		document.getElementById("refNum").innerHTML = language[switchlanguage]['refNum']
+		document.getElementById("onetimepassword").innerHTML = language[switchlanguage]['onetimepassword']
+		document.getElementById("resendOTP").innerHTML = language[switchlanguage]['resendOTP']
+		document.getElementById("verifyOTP").innerHTML = language[switchlanguage]['verifyOTP']
+		document.getElementById("popEmailCancel").innerHTML = language[switchlanguage]['popEmailCancel']
+		document.getElementById("popEmailOK").innerHTML = language[switchlanguage]['popEmailOK']
+		document.getElementById("popChgCancel").innerHTML = language[switchlanguage]['popChgCancel']
+		document.getElementById("popChgOK").innerHTML = language[switchlanguage]['popChgOK']
+		document.getElementById("EmailTxt").innerHTML = language[switchlanguage]['EmailTxt']
+		document.getElementById("fillEmail").innerHTML = language[switchlanguage]['fillEmail']
+		document.getElementById("tacBottomText").innerHTML = language[switchlanguage]['tacBottomText']
+	}
+	
+	function showHidexx(){
+		
+			
+		
+	}
+	
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</body>
+</html>
