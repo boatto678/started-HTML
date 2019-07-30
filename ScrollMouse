@@ -1,0 +1,16 @@
+
+	document.getElementById("Textarea").onscroll = function() {test()};
+	
+	function test(){
+		var x = document.getElementById("Textarea")
+		
+		if((x.scrollHeight - x.clientHeight) === x.scrollTop){
+			console.log("OK")
+		}
+	}
+  
+  
+  
+  
+  
+  
