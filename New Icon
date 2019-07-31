@@ -1,0 +1,161 @@
+js document.getElementById("lastPointcancel").classList.remove("display")
+html <div  id="lastPointcheck" class="fa fa-check-circle display" style="font-size: 100px; color: #2cb785; padding-top: 10%;"></div>
+			<div  id="lastPointcancel" class="fa fa-times-circle display" style="font-size: 100px; color: #bb1d1d; padding-top: 10%;"></div>
+css  .display {
+	display: none;
+}
+
+
+
+
+
+function RequestOTP(type,event) {
+console.log(mobilekeypress)
+var citizen = document.getElementById("citizen");
+  var mobile = document.getElementById("mobile");
+var requestOTP = document.getElementById("requestOTP");
+//citizen.classList.remove("error");
+//mobile.classList.remove("error");
+if(type == 'citizen')
+{
+if(citizen.value.length < 19)
+{
+citizen.classList.remove("error")
+}
+}
+else{
+if(mobile.value.length < 10)
+{
+mobile.classList.remove("error")
+}
+
+if(switchMobile == true){
+
+if(document.getElementById("mobile").value.length == 1 && mobileStr == "" && mobileNum == "")
+{
+mobileNum = document.getElementById("mobile").value
+mobileStr = "X"
+mobileLength = document.getElementById("mobile").value.length
+}
+else{
+
+if(document.getElementById("mobile").value.length  > mobileLength){
+if(document.getElementById("mobile").value.length > 6){
+mobileNum =  mobileNum + document.getElementById("mobile").value.charAt(document.getElementById("mobile").value.length-1)
+mobileStr = document.getElementById("mobile").value
+mobileLength++
+}
+else{
+mobileNum =  mobileNum + document.getElementById("mobile").value.charAt(document.getElementById("mobile").value.length-1)
+mobileStr = mobileStr + "X"
+mobileLength++
+}
+}
+else{
+if(event.srcElement.selectionStart < 6 ){
+mobileNum = mobileNum.slice(0,event.srcElement.selectionStart)+mobileNum.slice(event.srcElement.selectionEnd+1,mobileNum.length)
+mobileLength = document.getElementById("mobile").value.length
+
+if(document.getElementById("mobile").value.length <= 6)
+{
+if(document.getElementById("mobile").value.length == 0 )
+{
+mobileStr = ""
+mobileNum = ""
+mobileLength = 0
+}
+else{
+mobileStr = ""
+for(var passX = 0 ; passX < document.getElementById("mobile").value.length ; passX++)
+{
+mobileStr += "X";
+}
+}
+}
+else{
+mobileStr = document.getElementById("mobile").value.replace(mobileStr.slice(0,6) , "XXXXXX")
+
+}
+}
+else{
+mobileNum = mobileNum.slice(0,event.srcElement.selectionStart)+mobileNum.slice(event.srcElement.selectionEnd+1,mobileNum.length)
+mobileLength = document.getElementById("mobile").value.length
+mobileStr =  mobileStr.slice(0,event.srcElement.selectionStart)+mobileStr.slice(event.srcElement.selectionEnd+1,mobileStr.length)
+}
+}
+}
+
+mobile.value = mobileStr
+}
+else{
+
+if(document.getElementById("mobile").value.length == 1 && mobileStr == "" && mobileNum == "")
+{
+mobileNum = document.getElementById("mobile").value
+mobileStr = "X"
+mobileLength = document.getElementById("mobile").value.length
+}
+else
+{
+
+if(document.getElementById("mobile").value.length  > mobileLength){
+if(document.getElementById("mobile").value.length > 6){
+mobileNum =  document.getElementById("mobile").value
+mobileStr = mobileStr+document.getElementById("mobile").value.charAt(document.getElementById("mobile").value.length-1)
+mobileLength++
+}
+else{
+mobileNum =  document.getElementById("mobile").value
+mobileStr = mobileStr + "X"
+mobileLength++
+}
+}
+else
+{
+
+if(event.srcElement.selectionStart < 6 ){
+mobileNum = document.getElementById("mobile").value
+mobileLength = document.getElementById("mobile").value.length
+if(document.getElementById("mobile").value.length <= 6)
+{
+if(document.getElementById("mobile").value.length == 0 )
+{
+mobileStr = ""
+mobileNum = ""
+mobileLength = 0
+}
+else{
+mobileStr = ""
+for(var passX = 0 ; passX < document.getElementById("mobile").value.length ; passX++)
+{
+mobileStr += "X";
+}
+}
+}
+else{
+mobileStr = document.getElementById("mobile").value.replace(mobileStr.slice(0,6) , "XXXXXX")
+
+}
+}
+else{
+mobileNum = mobileNum.slice(0,event.srcElement.selectionStart)+mobileNum.slice(event.srcElement.selectionEnd+1,mobileNum.length)
+mobileLength = document.getElementById("mobile").value.length
+mobileStr =  mobileStr.slice(0,event.srcElement.selectionStart)+mobileStr.slice(event.srcElement.selectionEnd+1,mobileStr.length)
+}
+}
+}
+
+mobile.value = mobileNum
+}
+}
+
+if(citizen.value.length >= 13 && citizen.value.length <= 19 && mobile.value.length == 10)
+{
+requestOTP.disabled = false;
+requestOTP.removeAttribute("style"); 
+}
+else{
+requestOTP.disabled = true;
+requestOTP.setAttribute("style","background-color: #bbbbbb ; color: #ffffff;"); 
+}
+}
