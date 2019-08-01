@@ -1,14 +1,72 @@
-
-	document.getElementById("Textarea").onscroll = function() {test()};
-	
-	function test(){
-		var x = document.getElementById("Textarea")
-		
-		if((x.scrollHeight - x.clientHeight) === x.scrollTop){
-			console.log("OK")
+function patternSystem(type){
+	console.log("test")
+	if(type == 'citizen'){
+		citizen = document.getElementById("citizen")
+		if(citizen.value.length == 10)
+  		{
+			if(switchCitizen == false){
+				var Str = citizeNum.substring(0,3)
+			    +"-"+citizeNum.substring(3,6)
+			    +"-"+citizeNum.substring(6,10)
+			}else{
+				var Str = citizenStr.substring(0,3)
+			    +"-"+citizenStr.substring(3,6)
+			    +"-"+citizenStr.substring(6,10)
+			}
+			
+			citize.value = Str
+		}
+		else{
+			if(switchCitizen == true){
+				citize.value = citizenStr
+			}else{
+				citize.value = citizeNum
+			}
+			
+			}
+	}else{
+		mobile = document.getElementById("mobile")
+		if(mobile.value.length == 10)
+  		{
+			if(switchMobile == false){
+				var Str = mobileNum.substring(0,3)
+			    +"-"+mobileNum.substring(3,6)
+			    +"-"+mobileNum.substring(6,10)
+			}else{
+				var Str = mobileStr.substring(0,3)
+			    +"-"+mobileStr.substring(3,6)
+			    +"-"+mobileStr.substring(6,10)
+			}
+			
+		    mobile.value = Str
+		}
+		else{
+			if(switchMobile == true){
+				mobile.value = mobileStr
+			}else{
+				mobile.value = mobileNum
+			}
+			
+			}
+	}
+}
+function currentBeforPattern(type){
+if(type == 'citizen'){
+	citizen = document.getElementById("citizen")
+	if(switchCitizen == true){
+		citizen.value = citizenStr
+	}else{
+		citizen.value = citizenNum
+	}
+	}else{
+		mobile = document.getElementById("mobile")
+		if(switchMobile == true){
+			mobile.value = mobileStr
+		}else{
+			mobile.value = mobileNum
 		}
 	}
-  
+}
   
   
   
