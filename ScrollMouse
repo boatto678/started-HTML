@@ -67,8 +67,19 @@ if(type == 'citizen'){
 		}
 	}
 }
+
+
+
+//////////////
+document.getElementById("mobile").value = mobileNum
+switchMobile = false
+patternSystem()
+
+
+//////// HTML  
   
-  
+  						onblur="patternSystem('mobile')"
+						onmousedown="currentBeforPattern('mobile')"
   
   
   
